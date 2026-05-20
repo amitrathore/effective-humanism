@@ -1,6 +1,8 @@
 const header = document.querySelector("[data-header]");
 const chips = document.querySelectorAll("[data-filter]");
 const essayItems = document.querySelectorAll("[data-topic]");
+const essayGrid = document.querySelector(".essay-grid");
+const essayFeature = document.querySelector(".essay-feature");
 
 const updateHeader = () => {
   header.classList.toggle("is-scrolled", window.scrollY > 12);
@@ -14,8 +16,20 @@ chips.forEach((chip) => {
     const filter = chip.dataset.filter;
 
     chips.forEach((item) => item.classList.toggle("is-active", item === chip));
-    essayItems.forEach((item) => {
-      item.classList.toggle("is-hidden", filter !== "all" && item.dataset.topic !== filter);
-    });
+
+    // Fade out, swap visibility, fade back in
+    essayGrid.classList.add("is-filtering");
+    essayFeature.classList.add("is-filtering");
+
+    setTimeout(() => {
+      essayItems.forEach((item) => {
+        item.classList.toggle(
+          "is-hidden",
+          filter !== "all" && item.dataset.topic !== filter
+        );
+      });
+      essayGrid.classList.remove("is-filtering");
+      essayFeature.classList.remove("is-filtering");
+    }, 150);
   });
 });

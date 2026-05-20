@@ -18,6 +18,17 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Offset anchor targets so sticky header doesn't obscure them */
+[id] {
+  scroll-margin-top: 84px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
 body {
   margin: 0;
   color: var(--ink);
@@ -116,6 +127,12 @@ img {
   background: var(--ink);
   color: var(--paper);
   font-size: 0.75rem;
+  transition: background 180ms ease, color 180ms ease;
+}
+
+.brand:hover .brand-mark {
+  background: var(--green);
+  border-color: var(--green);
 }
 
 .nav {
@@ -126,12 +143,32 @@ img {
 }
 
 .nav a {
+  position: relative;
   text-decoration: none;
   color: var(--muted);
+  padding-bottom: 2px;
+  transition: color 180ms ease;
+}
+
+.nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 200ms ease;
 }
 
 .nav a:hover {
   color: var(--ink);
+}
+
+.nav a:hover::after {
+  transform: scaleX(1);
 }
 
 .section {
@@ -147,6 +184,8 @@ img {
   align-items: center;
   min-height: calc(100svh - 74px);
   padding-top: clamp(2rem, 5vw, 5rem);
+  /* Extra padding-bottom prevents the signal card from overlapping the next section */
+  padding-bottom: clamp(6rem, 10vw, 8rem);
 }
 
 .hero-copy {
@@ -211,18 +250,19 @@ h3 {
   align-items: center;
   justify-content: center;
   min-height: 3rem;
-  padding: 0.85rem 1.05rem;
+  padding: 0.85rem 1.4rem;
   border: 1px solid var(--ink);
   border-radius: 999px;
   font-size: 0.78rem;
   font-weight: 600;
   text-decoration: none;
   text-transform: uppercase;
-  transition: transform 180ms ease, background 180ms ease, color 180ms ease;
+  transition: transform 180ms ease, background 180ms ease, color 180ms ease, box-shadow 180ms ease;
 }
 
 .button:hover {
   transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(21, 19, 19, 0.14);
 }
 
 .button.primary {
@@ -230,8 +270,17 @@ h3 {
   color: var(--paper);
 }
 
+.button.primary:hover {
+  background: #2a2626;
+}
+
 .button.secondary {
   background: rgba(255, 255, 255, 0.5);
+}
+
+.button.secondary:hover {
+  background: var(--ink);
+  color: var(--paper);
 }
 
 .hero-visual {
@@ -245,6 +294,11 @@ h3 {
   border-radius: 2px;
   box-shadow: var(--shadow);
   filter: contrast(1.04);
+  transition: box-shadow 280ms ease;
+}
+
+.hero-visual:hover img {
+  box-shadow: 0 32px 96px rgba(32, 28, 22, 0.2);
 }
 
 .signal-card {
@@ -299,6 +353,11 @@ h3 {
   font-weight: 650;
   text-decoration-thickness: 0.08em;
   text-underline-offset: 0.22em;
+  transition: color 160ms ease;
+}
+
+.text-link:hover {
+  color: #174d42;
 }
 
 .section-heading,
@@ -328,6 +387,11 @@ h3 {
   padding: clamp(1.2rem, 3vw, 2rem);
   border-right: 1px solid var(--ink);
   border-bottom: 1px solid var(--ink);
+  transition: background 200ms ease;
+}
+
+.principle-grid article:hover {
+  background: #f3ede3;
 }
 
 .principle-grid article:nth-child(3n) {
@@ -354,6 +418,7 @@ h3 {
 
 .filter-bar {
   display: flex;
+  flex-shrink: 0;
   flex-wrap: wrap;
   gap: 0.5rem;
   justify-content: flex-end;
@@ -370,12 +435,29 @@ h3 {
   font-size: 0.72rem;
   font-weight: 600;
   text-transform: uppercase;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+
+.chip:hover:not(.is-active) {
+  border-color: var(--ink);
+  color: var(--ink);
 }
 
 .chip.is-active {
   border-color: var(--ink);
   background: var(--ink);
   color: var(--paper);
+}
+
+/* Essay filter transition */
+.essay-grid,
+.essay-feature {
+  transition: opacity 150ms ease;
+}
+
+.essay-grid.is-filtering,
+.essay-feature.is-filtering {
+  opacity: 0;
 }
 
 .essay-feature {
@@ -400,7 +482,13 @@ h3 {
 }
 
 .essay-feature .button {
+  flex-shrink: 0;
   border-color: #fffaf0;
+  color: #fffaf0;
+}
+
+.essay-feature .button:hover {
+  background: rgba(255, 250, 240, 0.15);
   color: #fffaf0;
 }
 
@@ -417,12 +505,13 @@ h3 {
   padding: 1.25rem;
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.68);
-  transition: transform 180ms ease, border-color 180ms ease, opacity 180ms ease;
+  transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
 }
 
 .essay-card:hover {
   transform: translateY(-4px);
   border-color: var(--ink);
+  box-shadow: 0 12px 40px rgba(21, 19, 19, 0.1);
 }
 
 .essay-card.is-hidden,
@@ -438,6 +527,11 @@ h3 {
 .essay-card a {
   color: var(--green);
   font-weight: 650;
+  transition: color 160ms ease;
+}
+
+.essay-card a:hover {
+  color: #174d42;
 }
 
 .founder {
@@ -451,6 +545,12 @@ h3 {
   width: 240px;
   border: 1px solid var(--ink);
   box-shadow: 10px 10px 0 var(--red);
+  transition: box-shadow 220ms ease, transform 220ms ease;
+}
+
+.founder img:hover {
+  box-shadow: 14px 14px 0 var(--red);
+  transform: translate(-2px, -2px);
 }
 
 .join {
@@ -477,6 +577,7 @@ h3 {
 .site-footer {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 1rem;
   padding: 1.25rem clamp(1rem, 4vw, 3rem);
   border-top: 1px solid var(--ink);
@@ -488,10 +589,28 @@ h3 {
   margin: 0;
 }
 
+.site-footer a {
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
+.site-footer a:hover {
+  color: var(--ink);
+}
+
 @media (max-width: 880px) {
-  .site-header,
+  .site-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .section-heading,
-  .essays-top,
+  .essays-top {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
   .site-footer {
     align-items: flex-start;
     flex-direction: column;
@@ -512,10 +631,15 @@ h3 {
 
   .hero {
     min-height: auto;
+    padding-bottom: clamp(4rem, 8vw, 6rem);
   }
 
   .hero-visual img {
     margin-left: 0;
+  }
+
+  .filter-bar {
+    justify-content: flex-start;
   }
 
   .principle-grid,
@@ -536,6 +660,7 @@ h3 {
 
   .essay-feature {
     grid-template-columns: 1fr;
+    align-items: start;
   }
 
   .join-actions {
@@ -562,6 +687,7 @@ h3 {
 
   .button {
     width: 100%;
+    justify-content: center;
   }
 
   .signal-card {
@@ -570,5 +696,10 @@ h3 {
     bottom: auto;
     width: calc(100% - 1rem);
     margin: -1rem 0 0 0.5rem;
+  }
+
+  .founder img {
+    width: 100%;
+    max-width: 300px;
   }
 }
